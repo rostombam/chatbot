@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: chatbot_local_bi_web
+    ports:
+      - "5001:5001" # Map host port 5001 to container port 5001
+    volumes:
+      - .:/app # Mount the current directory to /app in the container for development (optional)
+               # For production, you might remove this or make it read-only after initial build
+    env_file:
+      - .env # Load environment variables from .env file
+    environment:
+      # You can override or add environment variables here if needed
+      # FLASK_ENV: development # Example: override to development for local testing with compose
+      # PYTHONUNBUFFERED ensures Python output (e.g., logs) is sent straight to terminal
+      PYTHONUNBUFFERED: 1
+    # networks:
+      # - app-network # Optional: define a custom network
+
+# Optional: Define a custom network
+# networks:
+#   app-network:
+#     driver: bridge
+
+# Optional: Define volumes if you need persistent storage for data (e.g., uploaded files, database)
+# volumes:
+#   app-data:

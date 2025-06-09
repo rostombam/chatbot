@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Local BI - Enhanced</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            padding-top: 20px;
+        }
+        .container {
+            max-width: 900px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background-color: #fdfdfd;
+        }
+        .section h2 {
+            margin-top: 0;
+            color: #0056b3;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .form-control-file, .form-control {
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none; /* Hidden by default */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .alert {
+            margin-top: 15px;
+        }
+        #dataPreview table {
+            width: 100%;
+            font-size: 0.9em;
+        }
+        #dataPreview th, #dataPreview td {
+            min-width: 100px;
+        }
+        .chat-history {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        .chat-message {
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+        }
+        .user-message {
+            background-color: #e1f5fe;
+            text-align: right;
+        }
+        .bot-message {
+            background-color: #e8f5e9;
+        }
+        .report-section {
+            margin-top: 20px;
+        }
+        .nav-tabs .nav-link.active {
+            color: #0056b3;
+            background-color: #f8f9fa;
+            border-color: #dee2e6 #dee2e6 #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chatbot Local BI 📊</h1>
+
+        <!-- File Upload Section -->
+        <div class="section file-upload-section">
+            <h2><i class="fas fa-upload"></i> 1. Upload Your Data</h2>
+            <div class="form-group">
+                <label for="fileUpload">Select CSV or Excel file:</label>
+                <input type="file" class="form-control-file" id="fileUpload" name="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            </div>
+            <button class="btn btn-primary" onclick="uploadFile()">Upload File</button>
+            <div id="uploadStatus" class="mt-2"></div>
+            <div class="loader" id="uploadLoader"></div>
+        </div>
+
+        <!-- Data Preview and Info Section -->
+        <div class="section preview-section" id="previewSection" style="display:none;">
+            <h2><i class="fas fa-table"></i> 2. Data Overview</h2>
+            <p>File: <strong id="fileName"></strong></p>
+            <p>Columns: <span id="columnList" class="badge badge-info"></span></p>
+            <div id="dataPreview" class="table-responsive"></div>
+        </div>
+
+        <!-- Chat and Analysis Section -->
+        <div class="section query-section" id="querySection" style="display:none;">
+            <h2><i class="fas fa-comments"></i> 3. Analyze & Chat</h2>
+            <div class="chat-history" id="chatHistory">
+                <!-- Chat messages will appear here -->
+            </div>
+            <div class="form-group">
+                <label for="queryInput">Ask a question about your data:</label>
+                <textarea class="form-control" id="queryInput" rows="2" placeholder="e.g., What are the total sales? Show me trends for product X."></textarea>
+            </div>
+            <button class="btn btn-success" onclick="submitQuery()">Send Query</button>
+            <div class="loader" id="queryLoader"></div>
+            <div id="queryError" class="alert alert-danger mt-2" style="display:none;"></div>
+        </div>
+
+        <!-- Report Section -->
+        <div class="section report-section" id="reportSection" style="display:none;">
+            <h2><i class="fas fa-chart-pie"></i> 4. Generated Report / Insights</h2>
+            <ul class="nav nav-tabs" id="reportTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="text-report-tab" data-toggle="tab" href="#textReportContent" role="tab" aria-controls="textReportContent" aria-selected="true">Textual Insights</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="html-report-tab" data-toggle="tab" href="#htmlReportContent" role="tab" aria-controls="htmlReportContent" aria-selected="false">HTML Report</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="reportTabContent">
+                <div class="tab-pane fade show active" id="textReportContent" role="tabpanel" aria-labelledby="text-report-tab" style="padding-top:15px;">
+                    <!-- Text report content will be injected here -->
+                </div>
+                <div class="tab-pane fade" id="htmlReportContent" role="tabpanel" aria-labelledby="html-report-tab" style="padding-top:15px;">
+                    <iframe id="htmlReportFrame" style="width:100%; height:400px; border:1px solid #ccc;"></iframe>
+                </div>
+            </div>
+             <button class="btn btn-info mt-2" onclick="requestReport()">Generate Detailed Report</button>
+             <div class="loader" id="reportLoader"></div>
+             <div id="reportStatus" class="mt-2"></div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome for icons -->
+
+
+    <script>
+        let currentDfId = null; // Stores the ID/name of the uploaded dataframe
+        let lastQuery = ""; // Stores the last user query for report generation context
+
+        // Helper to show/hide loaders
+        function toggleLoader(loaderId, show) {
+            document.getElementById(loaderId).style.display = show ? 'block' : 'none';
+        }
+
+        // Helper to display status messages
+        function showStatus(elementId, message, isError = false) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = isError ? 'alert alert-danger mt-2' : 'alert alert-success mt-2';
+            element.style.display = message ? 'block' : 'none';
+        }
+
+        // Add message to chat history
+        function addChatMessage(message, type) {
+            const chatHistory = document.getElementById('chatHistory');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('chat-message', type === 'user' ? 'user-message' : 'bot-message');
+            messageDiv.textContent = message; // Using textContent to prevent XSS
+            chatHistory.appendChild(messageDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight; // Scroll to bottom
+        }
+
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileUpload');
+            if (fileInput.files.length === 0) {
+                showStatus('uploadStatus', 'Please select a file first.', true);
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            toggleLoader('uploadLoader', true);
+            showStatus('uploadStatus', ''); // Clear previous status
+            document.getElementById('previewSection').style.display = 'none';
+            document.getElementById('querySection').style.display = 'none';
+            document.getElementById('reportSection').style.display = 'none';
+            currentDfId = null; // Reset df ID
+
+            try {
+                const response = await fetch('/upload', { method: 'POST', body: formData });
+                const result = await response.json();
+
+                if (response.ok) {
+                    currentDfId = result.df_id;
+                    document.getElementById('fileName').textContent = result.df_id;
+                    document.getElementById('columnList').textContent = result.columns.join(', ');
+                    document.getElementById('dataPreview').innerHTML = result.head; // Safe if result.head is sanitized server-side or simple HTML
+
+                    document.getElementById('previewSection').style.display = 'block';
+                    document.getElementById('querySection').style.display = 'block';
+                    document.getElementById('reportSection').style.display = 'none'; // Hide old reports
+                    document.getElementById('chatHistory').innerHTML = ''; // Clear chat
+                    addChatMessage(`File "${result.df_id}" uploaded. Columns: ${result.columns.join(', ')}. Ask me anything about it!`, 'bot');
+                    showStatus('uploadStatus', result.message, false);
+                } else {
+                    showStatus('uploadStatus', `Error: ${result.error}`, true);
+                }
+            } catch (error) {
+                showStatus('uploadStatus', `Network error: ${error.message}`, true);
+            } finally {
+                toggleLoader('uploadLoader', false);
+            }
+        }
+
+        async function submitQuery() {
+            const queryInput = document.getElementById('queryInput');
+            lastQuery = queryInput.value; // Store query
+
+            if (!lastQuery) {
+                showStatus('queryError', 'Please enter a query.', true);
+                return;
+            }
+            if (!currentDfId) {
+                showStatus('queryError', 'No data uploaded. Please upload a file first.', true);
+                return;
+            }
+
+            addChatMessage(lastQuery, 'user');
+            toggleLoader('queryLoader', true);
+            showStatus('queryError', ''); // Clear previous error
+
+            try {
+                const response = await fetch('/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ df_id: currentDfId, query: lastQuery }),
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    addChatMessage(result.response, 'bot');
+                    // Optionally trigger report section display if query was insightful
+                    if (result.response.toLowerCase().includes("insight") || result.response.toLowerCase().includes("trend")) {
+                         document.getElementById('reportSection').style.display = 'block';
+                         document.getElementById('textReportContent').innerHTML = `<pre>${result.response}</pre>`; // Display query response as initial insight
+                         document.getElementById('htmlReportFrame').srcdoc = "Preview HTML report based on this query by clicking 'Generate Detailed Report'";
+
+                    }
+                } else {
+                    addChatMessage(`Error: ${result.error}`, 'bot');
+                    showStatus('queryError', `Error: ${result.error}`, true);
+                }
+            } catch (error) {
+                addChatMessage(`Network error: ${error.message}`, 'bot');
+                showStatus('queryError', `Network error: ${error.message}`, true);
+            } finally {
+                toggleLoader('queryLoader', false);
+                queryInput.value = ''; // Clear input field
+            }
+        }
+
+        async function requestReport() {
+            if (!currentDfId) {
+                showStatus('reportStatus', 'Please upload and query data first.', true);
+                return;
+            }
+            if (!lastQuery) {
+                showStatus('reportStatus', 'Please ask a question first to provide context for the report.', true);
+                return;
+            }
+
+            toggleLoader('reportLoader', true);
+            showStatus('reportStatus', '');
+            document.getElementById('reportSection').style.display = 'block';
+
+
+            try {
+                const response = await fetch('/generate_report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ df_id: currentDfId, query_context: lastQuery })
+                });
+                const result = await response.json();
+                toggleLoader('reportLoader', false);
+
+                if (response.ok) {
+                    showStatus('reportStatus', 'Report generated successfully!', false);
+                    // Display text report
+                    document.getElementById('textReportContent').innerHTML = `<pre>${result.text_report}</pre>`; // Assuming result.text_report exists
+
+                    // Display HTML report in iframe
+                    const iframe = document.getElementById('htmlReportFrame');
+                    // Use srcdoc for self-contained HTML. For external links, use iframe.src = result.html_report_url;
+                    iframe.srcdoc = result.html_report; // Assuming result.html_report contains full HTML string
+
+                    // Activate the first tab (text report)
+                    $('#reportTab a[href="#textReportContent"]').tab('show');
+
+                } else {
+                    showStatus('reportStatus', `Error generating report: ${result.error}`, true);
+                     document.getElementById('textReportContent').textContent = `Error: ${result.error}`;
+                     document.getElementById('htmlReportFrame').srcdoc = `<h3>Error generating report:</h3><p>${result.error}</p>`;
+                }
+
+            } catch (error) {
+                toggleLoader('reportLoader', false);
+                showStatus('reportStatus', `Network error during report generation: ${error.message}`, true);
+                document.getElementById('textReportContent').textContent = `Network Error: ${error.message}`;
+                document.getElementById('htmlReportFrame').srcdoc = `<h3>Network Error:</h3><p>${error.message}</p>`;
+            }
+        }
+
+    </script>
+</body>
+</html>

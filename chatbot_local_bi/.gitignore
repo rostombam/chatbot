@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.Python
+pip-wheel-metadata/
+.installed.cfg
+*.egg
+venv/
+env/
+.venv/
+instance/ # Flask instance folder
+
+# Environment files
+.env
+.env.*
+!/.env.example # Keep the example file
+
+# IDE / Editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Uploads (if you decide to save uploaded files locally)
+# uploads/ # Uncomment if you create an 'uploads' directory and want to ignore its content
+
+# Other
+*.log
+*.pot
+*.sqlite3
+coverage.xml
+.coverage
