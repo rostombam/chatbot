@@ -1,300 +1,68 @@
-/* General Body Styles */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5; /* Lighter grey background */
-    color: #333;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
     margin: 0;
-    padding-top: 20px;
-    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
-
-/* Main Container */
 .container {
-    max-width: 1000px; /* Slightly wider for more content */
-    background-color: #ffffff;
-    padding: 25px 35px; /* More padding */
-    border-radius: 10px; /* More rounded corners */
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); /* Softer shadow */
-    margin: 20px auto;
+    width: 600px;
+    height: 80vh;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
 }
-
-/* Headings */
-h1 {
-    color: #0056b3; /* Darker blue for main heading */
-    text-align: center;
-    margin-bottom: 35px; /* More space below heading */
-    font-weight: 600; /* Bolder main heading */
-}
-
-.section h2 {
-    color: #0069d9; /* Standard blue for section titles */
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 12px; /* More padding for section title underline */
-    margin-bottom: 25px; /* More space below section titles */
-    font-size: 1.75rem; /* Larger section titles */
-    font-weight: 500;
-}
-
-/* Sections Styling */
-.section {
-    margin-bottom: 35px; /* More space between sections */
-    padding: 25px; /* More padding within sections */
-    border: 1px solid #d6dde3; /* Lighter border for sections */
-    border-radius: 6px; /* Slightly more rounded section corners */
-    background-color: #fbfcfd; /* Very light background for sections */
-}
-
-/* Form Elements */
-.form-group label {
-    font-weight: 500; /* Bolder labels */
-    color: #495057; /* Standard label color */
-    margin-bottom: 8px; /* Space between label and input */
-}
-
-.form-control-file,
-.form-control,
-textarea.form-control { /* Ensure textarea gets these styles too */
-    margin-bottom: 18px; /* More space below form inputs */
-    border-radius: 5px; /* Slightly more rounded input fields */
-    border-color: #ced4da; /* Standard border color */
-    padding: .5rem .75rem; /* Adjust padding for better text fit */
-}
-
-.form-control:focus,
-textarea.form-control:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
-}
-
-/* Buttons */
-.btn {
-    padding: 10px 18px; /* Larger buttons */
-    font-size: 0.95rem; /* Slightly smaller button text for balance */
-    border-radius: 5px; /* Consistent rounded corners */
-    letter-spacing: 0.5px; /* Slight letter spacing */
-    font-weight: 500;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0050a0; /* Darker border on hover */
-}
-
-.btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-}
-.btn-success:hover {
-    background-color: #1e7e34;
-    border-color: #1c7430;
-}
-
-.btn-info {
-    background-color: #17a2b8;
-    border-color: #17a2b8;
-    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-}
-.btn-info:hover {
-    background-color: #117a8b;
-    border-color: #10707f;
-}
-
-
-/* Loader Animation */
-.loader {
-    border: 5px solid #e9ecef; /* Lighter grey for loader base */
-    border-top: 5px solid #007bff; /* Blue for loader spinner */
-    border-radius: 50%;
-    width: 35px; /* Slightly smaller loader */
-    height: 35px;
-    animation: spin 0.8s linear infinite; /* Faster spin */
-    margin: 20px auto;
-    display: none;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Alerts and Status Messages */
-.alert { /* General alert styling */
-    margin-top: 18px; /* More space above alerts */
-    border-radius: 5px; /* Consistent rounded corners */
-    padding: 12px 18px; /* More padding in alerts */
-    font-size: 0.95rem;
-}
-.alert-success {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
-}
-.alert-danger {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
-}
-.alert-info {
-    background-color: #d1ecf1;
-    border-color: #bee5eb;
-    color: #0c5460;
-}
-
-
-/* Data Preview Table */
-#dataPreview {
-    max-height: 350px; /* Limit height for very long previews */
-    overflow-y: auto; /* Add scroll for long previews */
-}
-#dataPreview table {
-    width: 100%;
-    font-size: 0.85em; /* Slightly smaller table font */
-    border-collapse: collapse; /* Cleaner table lines */
-}
-#dataPreview th,
-#dataPreview td {
-    min-width: 90px; /* Slightly smaller min-width */
-    padding: 8px 10px; /* Adjust padding */
-    border: 1px solid #dee2e6; /* Standard table border */
-}
-#dataPreview th {
-    background-color: #e9ecef; /* Lighter header for table */
-    font-weight: 600; /* Bolder table headers */
-    color: #495057;
-}
-
-/* Column List Badge */
-#columnList.badge {
-    font-size: 0.85em; /* Adjust badge font size */
-    padding: .4em .7em; /* Adjust badge padding */
-    font-weight: 500;
-    vertical-align: middle;
-}
-
-/* Chat History */
-.chat-history {
-    max-height: 350px; /* Increased height for chat */
-    overflow-y: auto;
-    border: 1px solid #d6dde3; /* Lighter border */
-    padding: 15px; /* More padding */
-    border-radius: 5px; /* Consistent rounded corners */
-    margin-bottom: 20px; /* More space below chat history */
-    background-color: #f8f9fa; /* Light background for chat area */
-}
-
-.chat-message {
-    padding: 10px 12px; /* More padding in messages */
-    margin-bottom: 10px; /* More space between messages */
-    border-radius: 6px; /* Slightly more rounded messages */
-    line-height: 1.5; /* Improved readability */
-    word-wrap: break-word; /* Ensure long words break */
-}
-
-.user-message {
-    background-color: #dfefff; /* Lighter blue for user messages */
-    text-align: right;
-    margin-left: 40px; /* Indent from left */
-    color: #004085;
-}
-
-.bot-message {
-    background-color: #e2f0e4; /* Lighter green for bot messages */
-    margin-right: 40px; /* Indent from right */
-    color: #155724;
-}
-
-/* Report Section Tabs */
-.report-section .nav-tabs {
-    margin-bottom: 20px; /* Space below tabs */
-}
-.report-section .nav-tabs .nav-link {
-    border-radius: 5px 5px 0 0; /* Rounded top corners for tabs */
-    color: #0056b3;
-    font-weight: 500;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-.report-section .nav-tabs .nav-link.active {
-    color: #0056b3;
-    background-color: #fdfdfd; /* Light background for active tab to match section */
-    border-color: #d6dde3 #d6dde3 #fdfdfd; /* Match section border */
-}
-.report-section .nav-tabs .nav-link:hover {
-    background-color: #e9ecef; /* Light hover for inactive tabs */
-    border-color: #e9ecef;
-}
-
-.report-section .tab-content {
-    padding-top: 20px; /* Space above tab content */
-    background-color: #fdfdfd; /* Consistent background */
-    border: 1px solid #d6dde3; /* Border around tab content */
-    border-top: none; /* Remove top border as tabs handle it */
-    padding: 20px;
-    border-radius: 0 0 6px 6px; /* Rounded bottom corners */
-}
-
-#htmlReportFrame {
-    width: 100%;
-    height: 450px; /* Increased height for HTML report */
-    border: 1px solid #d6dde3; /* Consistent border */
-    border-radius: 4px; /* Rounded corners for iframe */
-}
-
-/* Text Report Content (preformatted) */
-#textReportContent pre {
-    background-color: #f8f9fa; /* Light background for preformatted text */
+.chat-header {
+    background: #4a90e2;
+    color: white;
     padding: 15px;
-    border-radius: 4px;
-    border: 1px solid #d6dde3;
-    white-space: pre-wrap; /* Wrap long lines */
-    word-break: break-all; /* Break long words if necessary */
-    font-size: 0.9em;
-    max-height: 400px; /* Max height for text report */
-    overflow-y: auto; /* Scroll if content exceeds max height */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    text-align: center;
 }
-
-/* FontAwesome Icons (ensure you have FA linked in HTML) */
-.fas {
-    margin-right: 8px; /* Space after icons */
+.chat-header h2, .chat-header p { margin: 0; }
+.chat-window {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
 }
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .container {
-        padding: 20px 25px;
-    }
-    .section h2 {
-        font-size: 1.5rem;
-    }
-    .btn {
-        width: 100%; /* Full width buttons on smaller screens */
-        margin-bottom: 10px;
-    }
-    .chat-message {
-        margin-left: 10px;
-        margin-right: 10px;
-    }
+.message {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
 }
-
-@media (max-width: 576px) {
-    body {
-        padding-top: 10px;
-    }
-    .container {
-        margin: 10px;
-        padding: 15px 20px;
-    }
-    .section h2 {
-        font-size: 1.3rem;
-    }
-    h1 {
-        font-size: 1.8rem;
-        margin-bottom: 25px;
-    }
+.user-message { align-items: flex-end; }
+.bot-message { align-items: flex-start; }
+.message .bubble {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    line-height: 1.5;
+}
+.user-message .bubble { background-color: #4a90e2; color: white; border-bottom-right-radius: 4px; }
+.bot-message .bubble { background-color: #e9e9eb; color: #333; border-bottom-left-radius: 4px; }
+.chat-input-area { padding: 15px; }
+.upload-section { display: flex; align-items: center; margin-bottom: 10px; }
+#upload-button { background: #5cb85c; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+#file-name { margin-left: 10px; font-style: italic; color: #777; }
+.message-section { display: flex; }
+#message-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+}
+#send-button {
+    background: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
 }
